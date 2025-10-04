@@ -1,8 +1,9 @@
-import React from 'react';
-import DashBoard from './page/Dashboard';
+import React, { Suspense } from 'react';
+const DashBoard = React.lazy(() => import('./page/Dashboard'));
 import { ToastContainer } from 'react-toastify';
 import Container from '@mui/material/Container';
 import 'react-toastify/dist/ReactToastify.css'; // make sure to import CSS
+import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 
 const App: React.FC = () => {
   return (
@@ -16,7 +17,11 @@ const App: React.FC = () => {
         pauseOnHover
         draggable
       />
-      <DashBoard />
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading dashboard...</div>}>
+          <DashBoard />
+        </Suspense>
+      </ErrorBoundary>
     </Container>
   );
 };
